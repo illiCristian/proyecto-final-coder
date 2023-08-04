@@ -17,7 +17,6 @@
     "node": "14.x"
   },
   "dependencies": {
-    "@faker-js/faker": "^8.0.2",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "commander": "^11.0.0",
