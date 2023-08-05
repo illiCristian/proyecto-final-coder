@@ -26,6 +26,4 @@ app.use(express.static(__dirname + "/public"));
 app.use(morgan("dev"));
 app.set("views", __dirname + "/views");
 
-
-
 app.use(errorHandler);

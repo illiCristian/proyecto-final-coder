@@ -111,7 +111,7 @@ export default class UserController {
         .status(400)
         .send({ status: "error", error: "Invalid credentials" });
     req.session.user = {
-      name: req.user.first_name,
+      first_name: req.user.first_name,
       last_name: req.user.last_name,
       age: req.user.age,
       email: req.user.email,

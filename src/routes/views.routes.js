@@ -24,15 +24,15 @@ router.get("/realtimeproducts", productController.realTimeProducts);
 router.get("/products", productController.productsFilter);
 
 /* Chat */
-router.get("/chat", privateAcces, chatController.renderChat);
+router.get("/chat", publicAcces, chatController.renderChat);
 
 /* Cart */
 router.get("/cart", cartController.getCart);
 
 /* User */
-router.get("/register", publicAcces, userController.registerView);
-router.get("/login", publicAcces, userController.loginView);
+router.get("/register", userController.registerView);
+router.get("/login", userController.loginView);
 router.get("/profile", privateAcces, userController.profileView);
-router.get("/resetpassword", publicAcces, userController.resetPasswordView);
+router.get("/resetpassword", userController.resetPasswordView);
 router.get("/admin", privateAcces, adminAcces, userController.admin);
 export default router;
