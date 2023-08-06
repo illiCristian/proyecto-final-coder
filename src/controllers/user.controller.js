@@ -179,6 +179,11 @@ export default class UserController {
     req.logger.info("Usuario logueado usando github");
     res.redirect("/");
   };
+  googleCallback = async (req, res) => {
+    req.session.user = req.user;
+    req.logger.info("Usuario logueado usando google");
+    res.redirect("/");
+  };
 
   changeRol = async (req, res) => {
     try {

@@ -57,7 +57,8 @@ async function addToCart(id, req) {
         icon: "error",
         title: "Oops...",
         text: "Debes estar logueado para agregar al carrito",
-        footer: '<a href="/login">Ir al login?</a>',
+        footer:
+          '<a href="/login" class="underline text-lg font-bold text-gray-600 hover:text-gray-900">Ir al login?</a>',
       });
     }
     if (result.status === 200) {
@@ -74,6 +75,7 @@ async function addToCart(id, req) {
       }, 2000);
     }
   } catch (error) {
+    spinner.style.display = "none";
     alert("Error al agregar al carrito");
     console.log(error);
   }
