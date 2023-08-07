@@ -27,40 +27,40 @@
       <!-- Dropdown menu -->
       <div
         id="dropdown"
-        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 bg-gray-700 absolute"
+        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 absolute"
       >
         <ul
-          class="py-2 text-sm text-gray-700 text-gray-200"
+          class="py-2 text-sm text-black font-bold"
           aria-labelledby="dropdownDefaultButton"
         >
           <li>
             <a
               href="/?category=pantalones"
-              class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white"
+              class="block px-4 py-2 hover:bg-gray-600 hover:text-white"
             >Pantalones</a>
           </li>
           <li>
             <a
               href="/?category=remeras"
-              class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white"
+              class="block px-4 py-2 hover:bg-gray-600 hover:text-white"
             >Remeras</a>
           </li>
           <li>
             <a
               href="/?category=camisas"
-              class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white"
+              class="block px-4 py-2 hover:bg-gray-600 hover:text-white"
             >Camisas</a>
           </li>
           <li>
             <a
               href="/?category=zapatos"
-              class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white"
+              class="block px-4 py-2 hover:bg-gray-600 hover:text-white"
             >Zapatos</a>
           </li>
           <li>
             <a
               href="/"
-              class="block px-4 py-2 hover:bg-gray-100 hover:bg-gray-600 hover:text-white"
+              class="block px-4 py-2 hover:bg-gray-600 hover:text-white"
             >Ver todos</a>
           </li>
         </ul>
@@ -169,88 +169,12 @@
           </div>
         </div>
       {{/each}}
-      <!-- Add more product-card elements here for the slider -->
-    </div>
-  </section>{{!-- <section class="product">
-    <h2 class="product-category text-3xl font-semibold capitalize mb-8">best
-      selling</h2>
-    <button class="pre-btn absolute top-0 left-0 w-10 h-full flex justify-center items-center z-10">
-      <img src="images/arrow.png" alt="" class="opacity-20 hover:opacity-100" />
-    </button>
-    <button class="nxt-btn absolute top-0 right-0 w-10 h-full flex justify-center items-center z-10">
-      <img src="images/arrow.png" alt="" class="opacity-20 hover:opacity-100" />
-    </button>
-    <div class="product-container overflow-x-auto p-10">
-      {{#each products}}
-      <div class="product-card flex-none w-64 h-96 mr-10">
-        <div class="product-image relative w-full h-80">
-          <span class="discount-tag absolute top-4 right-4 bg-white p-2 rounded text-red-500 text-sm capitalize">50%
-            off</span>
-          <img src={{this.thumbnail}} class="product-thumb w-full h-full object-cover" alt="" />
-          <button
-            class="card-btn absolute bottom-4 left-1/2 transform -translate-x-1/2 p-2 w-4/5 bg-white rounded capitalize opacity-0 hover:opacity-100 transition duration-500 cursor-pointer">add
-            to wishlist</button>
-        </div>
-        <div class="product-info h-16 pt-2">
-          <h2 class="product-brand text-uppercase">brand</h2>
-          <p class="product-short-description truncate opacity-50 capitalize my-1">{{this.description}}</p>
-          <span class="price font-semibold text-lg">$20</span><span
-            class="actual-price ml-4 opacity-50 line-through">$40</span>
-        </div>
-      </div>
-      {{/each}}
-    </div>
-  </section> --}}
-  {{! Cards }}
-  {{!-- <div class="relative w-full flex gap-4 py-6 overflow-x-auto mx-10">
-    {{#each products}}
-    <div
-      class="max-w-xs rounded-md shadow-md bg-gray-900 text-gray-100 border-4 h-[520px] border-gray-200 border-gray-700 shadow-lg relative px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500 ease-in-out mx-auto mt-2">
-      <img src={{this.thumbnail}} alt="" class="object-cover object-center w-full rounded-t-md h-72 bg-gray-500" />
-      <div class="flex flex-col justify-between p-6 space-y-8">
-        <div class="space-y-2">
-          <h2 class="text-3xl font-semibold tracking truncate">{{this.title}}</h2>
-          <p class="text-gray-100 truncate">{{this.description}}</p>
-        </div>
-        <div class="flex flex-col justify-center items-center absolute bottom-1 left-1/2 y transform -translate-x-1/2">
-          <h1 class="text-gray-200 font-bold text-xl">${{this.price}}</h1>
 
-          <button onclick="openModal(this)" data-id="{{this.id}}"
-            class="flex items-center justify-center w-full p-3 font-semibold tracking rounded-md bg-violet-400 text-gray-900"><span
-              class="mr-2"><i class="fa-solid fa-cart-shopping"></i></span>
-            Add to cart</button>
-        </div>
-      </div>
     </div>
-
-    {{/each}}
-  </div>
-  --}}
+  </section>
   <section
     class="md:px-4 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 space-y-4 md:space-y-0 my-5 mx-8"
   >
-    {{!-- {{#each products}}
-    <div
-      class="max-w-xs rounded-md shadow-md bg-gray-900 text-gray-100 border-4 h-[520px] border-gray-200 border-gray-700 shadow-lg relative px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500 ease-in-out mx-auto mt-2">
-      <img src={{this.thumbnail}} alt="" class="object-cover object-center w-full rounded-t-md h-72 bg-gray-500" />
-      <div class="flex flex-col justify-between p-6 space-y-8">
-        <div class="space-y-2">
-          <h2 class="text-3xl font-semibold tracking truncate">{{this.title}}</h2>
-          <p class="text-gray-100 truncate">{{this.description}}</p>
-        </div>
-        <div class="flex flex-col justify-center items-center absolute bottom-1 left-1/2 y transform -translate-x-1/2">
-          <h1 class="text-gray-200 font-bold text-xl">${{this.price}}</h1>
-
-          <button onclick="openModal(this)" data-id="{{this.id}}"
-            class="flex items-center justify-center w-full p-3 font-semibold tracking rounded-md bg-violet-400 text-gray-900"><span
-              class="mr-2"><i class="fa-solid fa-cart-shopping"></i></span>
-            Add to cart</button>
-        </div>
-      </div>
-    </div>
-
-    {{/each}} --}}
-
     <div id="product-modal" class="fixed z-10 inset-0 overflow-y-auto hidden">
       <div
         class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
