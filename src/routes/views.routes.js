@@ -24,7 +24,7 @@ router.get("/productsDb", productController.productsDb);
 router.get("/realtimeproducts", productController.realTimeProducts);
 router.get("/products", productController.productsFilter);
 
-/* Chat */
+/* Chat. */
 router.get("/chat", publicAcces, chatController.renderChat);
 
 /* Cart */
