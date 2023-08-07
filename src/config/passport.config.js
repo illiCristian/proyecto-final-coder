@@ -83,8 +83,7 @@ const initializePassport = () => {
       {
         clientID: config.google.clientId,
         clientSecret: config.google.clientSecret,
-        callbackURL:
-          "https://proyecto-final-coder-production.up.railway.app/api/session/googlecallback",
+        callbackURL: "/api/session/googlecallback",
       },
       async (accessToken, refreshToken, profile, done) => {
         console.log(profile);
