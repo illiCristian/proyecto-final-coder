@@ -85,7 +85,7 @@
   </p>
 
   <button
-    class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded flex items-center w-[200px] mx-auto flex-row flex items-center justify-center">
+    class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded flex items-center w-[200px] mx-auto flex-row   justify-center">
     <svg width="60px" height="60px" viewBox="0 -3.5 256 256" xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMinYMin meet" fill="#000000" stroke="#000000">
       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -108,7 +108,7 @@
 }}
 <section class="max-w-lg mx-auto mt-10 shadow-lg p-5 hover:shadow-2xl">
   <div
-    class="w-full max-w-md p-8 space-y-3 rounded-xl dark:bg-gray-900 dark:text-gray-100"
+    class="w-full max-w-md p-8 space-y-3 rounded-xl bg-gray-900 text-gray-100"
   >
     <h1 class="text-2xl font-bold text-center">Login</h1>
     <form novalidate="" action="" class="space-y-6" id="loginForm">
@@ -119,26 +119,26 @@
           type="email"
           id="email"
           placeholder="joeLp@example.com"
-          class="w-full px-4 py-3 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
+          class="w-full px-4 py-3 rounded-md border-gray-700 bg-gray-900 text-gray-100 focus:border-violet-400"
         />
       </div>
       <div class="space-y-1 text-sm">
-        <label for="password" class="block dark:text-gray-400">Password</label>
+        <label for="password" class="block text-gray-400">Password</label>
         <input
           type="password"
           name="password"
           id="password"
           placeholder="Password"
-          class="w-full px-4 py-3 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
+          class="w-full px-4 py-3 rounded-md border-gray-700 bg-gray-900 text-gray-100 focus:border-violet-400"
         />
-        <div class="flex justify-end text-xs dark:text-gray-400">
+        <div class="flex justify-end text-xs text-gray-400">
           <button onclick="toggleForgotPassword()" type="button">Forgot
             Password?</button>
         </div>
 
       </div>
       <button
-        class="block w-full p-3 text-center rounded-sm dark:text-gray-900 dark:bg-violet-400"
+        class="block w-full p-3 text-center rounded-sm text-gray-900 bg-violet-400"
       >Sign in</button>
     </form>
     <div id="forgotPasswordContainer" class="mt-4" style="display: none;">
@@ -156,7 +156,7 @@
         />
         <button
           type="submit"
-          class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+          class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
         >
           Enviar
         </button>
@@ -184,9 +184,9 @@
       Credenciales invalidas, intente de nuevo
     </div>
     <div class="flex items-center pt-4 space-x-1">
-      <div class="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
-      <p class="px-3 text-sm dark:text-gray-400">Login with social accounts</p>
-      <div class="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
+      <div class="flex-1 h-px sm:w-16 bg-gray-700"></div>
+      <p class="px-3 text-sm text-gray-400">Login with social accounts</p>
+      <div class="flex-1 h-px sm:w-16 bg-gray-700"></div>
     </div>
     <div class="flex justify-center space-x-4">
       <a href="/api/session/google">
@@ -223,12 +223,11 @@
           </svg>
         </button></a>
     </div>
-    <p class="text-xs text-center sm:px-6 dark:text-gray-400">Don't have an
-      account?
+    <p class="text-xs text-center sm:px-6 text-gray-400">Don't have an account?
       <a
         rel="noopener noreferrer"
         href="/register"
-        class="underline dark:text-gray-100"
+        class="underline text-gray-100"
       >Sign up</a>
     </p>
   </div>
