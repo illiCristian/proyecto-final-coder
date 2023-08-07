@@ -20,7 +20,7 @@ const initializePassport = () => {
     const user = await userMongo.findUserById(id);
     done(null, user);
   });
-
+ 
   passport.use(
     "register",
     new LocalStrategy(
