@@ -10,7 +10,7 @@ import morgan from "morgan";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { addLogger } from "./utils/logger.js";
 
-const app = express();
+export const app = express();
 
 configureMiddlewares(app);
 configureServer(app);

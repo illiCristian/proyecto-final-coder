@@ -105,7 +105,6 @@ export default class UserController {
     res.send({ error: " Error en el rgistro" });
   };
   login = async (req, res) => {
-    console.log(req);
     if (!req.user)
       return res
         .status(400)

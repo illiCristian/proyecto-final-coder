@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import UserController from "../controllers/user.controller.js";
-import { isAuth, privateAcces } from "../middlewares/userMiddleware.js";
+import { privateAcces } from "../middlewares/userMiddleware.js";
 import { validateSchema } from "../middlewares/validateSchema.js";
 import { loginSchema, registerSchema } from "../schemas/auth.schema.js";
 const router = Router();

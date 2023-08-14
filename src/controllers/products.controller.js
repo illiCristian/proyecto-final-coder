@@ -48,6 +48,7 @@ export default class ProductController {
   };
   //Crear un producto
   createProduct = async (req, res) => {
+    console.log(req.body);
     try {
       const {
         title,
@@ -98,8 +99,9 @@ export default class ProductController {
       };
 
       const result = await productMongo.createProduct(product);
-      res.status(201).json(result);
+      res.status(200).json({ status: "succes", payload: result });
     } catch (error) {
+      console.log(error);
       res.status(500).send({ message: error.message });
     }
   };
@@ -215,7 +217,7 @@ export default class ProductController {
     try {
       const result = await productModel.find();
       if (!result) return res.status(404).send({ message: "No hay productos" });
-      res.status(200).json(result);
+      res.send({ status: "success", payload: result });
     } catch (error) {
       req.logger.error(error);
     }
