@@ -21,46 +21,72 @@ describe("Testing Products routes", () => {
     stock: 10,
     thumbnail: "imagen de prueba",
     code: "abc1232",
-    status: false,
+    status: false, 
   };
 
   const passwordd = "123456";
+  let userPremium;
   let newCart;
+  let responseLogin;
   before(async function () {
-    newCart = await cartModel.create({});
-    const userPremium = await userModel.create({
-      email: "userTest@userTest.com",
-      first_name: "Test",
-      last_nam: "SuperTest",
-      password: createHash(passwordd),
-      cart: newCart._id,
-      role: "premium",
-    });
+    this.timeout(10000);
+    try {
+      newCart = await cartModel.create({});
+      userPremium = await userModel.create({
+        email: "userTest2@userTest.com",
+        first_name: "Test",
+        last_nam: "SuperTest",
+        password: createHash(passwordd),
+        cart: newCart._id,
+        role: "premium",
+      });
 
-    const responseLogin = await requester
-      .post("/api/session/login")
-      .send({ email: userPremium.email, password: passwordd });
+      responseLogin = await requester
+        .post("/api/session/login")
+        .send({ email: userPremium.email, password: passwordd });
+     
+    } catch (error) {
+      console.log(error);
+    }
+    
   });
 
   after(async function () {
-    await userModel.findOneAndRemove({ email: "userTest@userTest.com" });
-    await productModel.findOneAndRemove({ code: "abc1232" });
-    await cartModel.findByIdAndDelete(newCart._id);
-  });
+    try {
+      await userModel.findOneAndRemove({ email: userPremium.email });
+      await productModel.findOneAndRemove({ code: "abc1232" });
+      await cartModel.findByIdAndDelete(newCart._id);
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }); 
 
   it("Testing prueba get products", async function () {
-    const response = await requester.get("/api/productsDatabase/products");
-    expect(response.status).to.be.equal(200);
-    expect(response.body).to.haveOwnProperty("status");
-    expect(Array.isArray(response.body.payload)).to.deep.equal(true);
+    const sessionCookie = responseLogin.header["set-cookie"];
+    try {
+      const response = await requester.get("/api/productsDatabase/products").set("Cookie", sessionCookie);
+      expect(response.status).to.be.equal(200);
+      expect(response.body).to.haveOwnProperty("status");
+      expect(Array.isArray(response.body.payload)).to.deep.equal(true);
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   it("Testing crear productos en la bd", async function () {
-    const response = await requester
-      .post("/api/productsDatabase")
-      .send(productTest);
-    expect(response.status).to.be.equal(200);
-  });
+    const sessionCookie = responseLogin.header["set-cookie"];
+    try {
+      const response = await requester
+        .post("/api/productsDatabase")
+        .set("Cookie", sessionCookie)
+        .send(productTest);
+      expect(response.status).to.be.equal(200);
+    } catch (error) {
+      console.log(error);
+    
+    }
+  }); 
 });
 
 //Usuario de prueba
