@@ -13,17 +13,17 @@ function openModal(btn) {
       modal.style.display = "block";
       spinner.style.display = "none";
       console.log(product);
-      modalContent.innerHTML = `<div class="bg-white shadow-md p-4 rounded-lg">
-      <h2 class="text-red-800 font-bold text-xl">${product.title}</h2>
-      <p class="text-gray-600">${product.description}</p>
-      <p class="text-green-500 font-semibold">Precio: $${product.price}</p>
-      <p class="text-blue-500 font-semibold">Stock: ${product.stock}</p>
+      modalContent.innerHTML = `<div class="bg-white shadow-md p-6 rounded-lg text-center">
+      <h2 class="text-gray-900 font-bold text-2xl mb-2 underline w-full">${product.title}</h2>
+      <p class="text-gray-600 mb-4">${product.description}</p>
+      <p class="text-gray-800 font-semibold text-xl mb-4">Precio: $${product.price}</p>
+      <p class="text-blue-900 font-semibold text-xl mb-4">Stock: ${product.stock}</p>
       <img src=${product.thumbnail} class="w-64 h-64 object-contain mx-auto my-4 rounded-md shadow-md" alt="${product.title}"/>
       <div class="flex justify-center space-x-4">
-        <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+        <button class="transform p-2 rounded-lg hover:bg-gray-900 hover:text-white transition duration-200 cursor-pointer bg-white text-gray-800 font-semibold w-1/2"
           onclick="addToCart('${product._id}')"
         >Agregar al carrito</button>
-        <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+        <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg w-1/2"
           onclick="closeModal()"
         >Cerrar</button>
       </div>
@@ -85,17 +85,17 @@ function closeModal() {
   modal.style.display = "none";
 }
 
-// Obtener referencias a los elementos del dropdown
-const dropdownToggleButton = document.getElementById("dropdownDefaultButton");
+/* const dropdownToggleButton = document.getElementById("dropdownDefaultButton");
 const dropdownMenu = document.getElementById("dropdown");
 
-// Función para alternar la visibilidad del menú desplegable
+
 function toggleDropdown() {
   dropdownMenu.classList.toggle("hidden");
 }
 
 // Agregar evento click al botón del dropdown
-dropdownToggleButton.addEventListener("click", toggleDropdown);
+dropdownToggleButton.addEventListener("click", toggleDropdown); */
+
 const form = document.getElementById("contactForm");
 async function submitForm() {
   let errorEmail = document.getElementById("errorEmail");

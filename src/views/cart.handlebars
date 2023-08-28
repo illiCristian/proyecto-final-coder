@@ -1,16 +1,16 @@
 <div
   class="relative overflow-x-auto shadow-md sm:rounded-lg mx-auto max-w-[900px] mt-10"
 >
-  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-    <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+  <table class="w-full text-sm text-left text-gray-800 font-sans">
+    <thead class="text-xs text-gray-700 uppercase">
       <tr>
-        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+        <th scope="col" class="px-6 py-3 text-white bg-gray-800">
           Product name
         </th>
         <th scope="col" class="px-6 py-3">
           Description
         </th>
-        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+        <th scope="col" class="px-6 py-3 bg-gray-800 text-white">
           Category
         </th>
         <th scope="col" class="px-6 py-3">
@@ -19,13 +19,13 @@
         <th scope="col" class="px-6 py-3">
           +
         </th>
-        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+        <th scope="col" class="px-6 py-3 bg-gray-800 text-white">
           Quantity
         </th>
         <th scope="col" class="px-6 py-3 items-center">
           -
         </th>
-        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+        <th scope="col" class="px-6 py-3 bg-gray-800 text-white">
           Stock
         </th>
         <th class="flex items-center px-6 py-3">
@@ -41,32 +41,32 @@
     </thead>
     {{#each cart.products}}
       <tbody>
-        <tr class="border-b border-gray-200 dark:border-gray-700">
+        <tr class="border-b border-gray-700 font-sans">
           <th
             scope="row"
-            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800"
+            class="px-6 py-4 font-medium whitespace-nowrap text-white bg-gray-800"
           >
             {{this.product.title}}
           </th>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 font-semibold">
             {{this.product.description}}
           </td>
-          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+          <td class="px-6 py-4 bg-gray-800 text-white font-semibold">
             {{this.product.category}}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 font-bold">
             {{this.product.price}}
           </td>
           <td>
             <button onclick="increaseQuantity({{@index}})">+</button>
           </td>
-          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+          <td class="px-6 py-4 bg-gray-800 text-white font-semibold">
             <span id="quantity{{@index}}">{{this.quantity}}</span>
           </td>
           <td class="px-6 py-4">
             <button onclick="decreaseQuantity({{@index}})">-</button>
           </td>
-          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+          <td class="px-6 py-4 bg-gray-800 text-white font-semibold">
             <span>{{this.product.stock}}</span>
           </td>
           <td class="flex items-center justify-center">
@@ -92,7 +92,7 @@
         <div role="status" class="flex items-center justify-center h-screen">
           <svg
             aria-hidden="true"
-            class="inline w-16 h-16 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600 top-50 left-50"
+            class="inline w-16 h-16 mr-2 text-gray-200 animate-spin text-gray-600 fill-blue-600 top-50 left-50"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -117,13 +117,13 @@
       class="bg-blue-500 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
     >Purchase</button>
   </div>
-  <footer class="py-6 dark:bg-gray-800 dark:text-gray-50 mt-auto">
+  <footer class="py-6 bg-gray-800 text-gray-50 mt-auto">
     <div
       class="container mx-auto flex flex-col justify-around p-4 text-center md:p-10 lg:flex-row"
     >
       <div class="flex flex-col justify-center lg:text-left">
         <p
-          class="mb-1 text-sm font-medium tracki uppercase dark:text-violet-400"
+          class="mb-1 text-sm font-medium tracki uppercase text-violet-400"
         ></p>
         <h1 class="py-2 text-3xl font-medium leadi title-font">Visite la tienda
           para ver mas productos!</h1>
@@ -132,7 +132,7 @@
         class="flex flex-col items-center justify-center flex-shrink-0 mt-6 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 lg:ml-4 lg:mt-0 lg:justify-end"
       ><a href="/">
           <button
-            class="inline-flex items-center px-6 py-3 rounded-lg dark:bg-violet-400 dark:text-gray-900"
+            class="inline-flex items-center px-6 py-3 rounded-lg bg-violet-400 text-gray-900"
           >
             <svg
               viewBox="0 0 24 24"

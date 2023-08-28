@@ -21,6 +21,10 @@ export default class ProductController {
       const { docs, hasPrevPage, hasNextPage, nextPage, prevPage, totalPages } =
         await productMongo.getAllProducts(category, options);
       const products = docs;
+      const pagesArray = [];
+      for (let i = 1; i <= totalPages; i++) {
+        pagesArray.push(i);
+      }
       res.render("home", {
         products,
         hasPrevPage,
@@ -29,6 +33,7 @@ export default class ProductController {
         prevPage,
         limit,
         totalPages,
+        pagesArray,
         user: req.session.user,
       });
     } catch (error) {
@@ -42,6 +47,39 @@ export default class ProductController {
       const result = await productMongo.getProductById(id);
       if (!result) res.status(404).send({ message: "Producto no encontrado" });
       res.status(200).send(result);
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
+  };
+  getProductToRender = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const result = await productMongo.getProductById(id);
+      if (!result) res.status(404).send({ message: "Producto no encontrado" });
+      console.log(result);
+      const {
+        _id,
+        title,
+        description,
+        price,
+        thumbnail,
+        stock,
+        code,
+        category,
+        status,
+      } = result;
+      res.render("product", {
+        id: _id,
+        title,
+        description,
+        price,
+        thumbnail,
+        stock,
+        code,
+        category,
+        status,
+        user: req.session.user,
+      });
     } catch (error) {
       res.status(500).send({ message: error.message });
     }
@@ -101,8 +139,7 @@ export default class ProductController {
       const result = await productMongo.createProduct(product);
       res.status(200).json({ status: "succes", payload: result });
     } catch (error) {
-      console.log(error);
-      res.status(500).send({ message: error.message });
+      res.status(400).send({ message: error.message });
     }
   };
   //Actualizar un producto
@@ -201,18 +238,37 @@ export default class ProductController {
     const { docs, hasPrevPage, hasNextPage, nextPage, prevPage, totalPages } =
       await productModel.paginate(filter, options);
     const products = docs;
-
-    res.render("products", {
-      products,
-      hasPrevPage,
-      hasNextPage,
-      nextPage,
-      prevPage,
-      limit,
-      totalPages,
-      user: req.session.user,
-    });
+    const pagesArray = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pagesArray.push(i);
+    }
+    if (req.session?.user?.role === "admin") {
+      res.render("productsAdmin", {
+        products,
+        hasPrevPage,
+        hasNextPage,
+        nextPage,
+        prevPage,
+        limit,
+        totalPages,
+        pagesArray,
+        user: req.session.user,
+      });
+    } else {
+      res.render("products", {
+        products,
+        hasPrevPage,
+        hasNextPage,
+        nextPage,
+        prevPage,
+        limit,
+        totalPages,
+        user: req.session.user,
+        pagesArray,
+      });
+    }
   };
+
   getProducts = async (req, res) => {
     try {
       const result = await productModel.find();
