@@ -7,14 +7,14 @@
           <li>
             <a
               href="/?page={{prevPage}}"
-              class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-700 rounded-l-lg hover:bg-gray-900 hover:text-white"
+              class="flex items-center justify-center px-3 h-6 ml-0 leading-tight text-gray-500 bg-white border border-gray-700 rounded-l-lg hover:bg-gray-900 hover:text-white"
             >Previous</a>
           </li>{{/if}}
         {{#each pagesArray as |page|}}
           <li>
             <a
               href="/?page={{page}}"
-              class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-700 hover:bg-gray-900 hover:text-white"
+              class="flex items-center justify-center px-3 h-6 leading-tight text-gray-500 bg-white border border-gray-700 hover:bg-gray-900 hover:text-white"
             >{{page}}</a>
           </li>
         {{/each}}
@@ -22,7 +22,7 @@
           {{#if hasNextPage}}
             <a
               href="/?page={{nextPage}}"
-              class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border rounded-r-lg hover:bg-gray-900 border-gray-700 hover:text-white"
+              class="flex items-center justify-center px-3 h-6 leading-tight text-gray-500 bg-white border rounded-r-lg hover:bg-gray-900 border-gray-700 hover:text-white"
             >Next</a>
           {{/if}}
         </li>
@@ -140,7 +140,7 @@
             >{{this.description}}</p>
             <div class="price-container flex items-center">
               <span
-                class="price font-semibold text-lg text-violet-500"
+                class="price font-bold text-lg text-gray-600"
               >${{this.price}}</span>
               <span
                 class="actual-price ml-4 text-gray-400 line-through"

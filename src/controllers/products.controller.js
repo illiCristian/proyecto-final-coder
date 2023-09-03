@@ -5,6 +5,7 @@ import { generateProduct } from "../utils.js";
 import { CustomError } from "../services/customError.service.js";
 import { generateProductErrorInfo } from "../services/ErrorInfo.js";
 import { EError } from "../enums/Errors.js";
+import { processImage } from "../utils/helpers/proccesImage.js";
 const manager = new ProductManager();
 const productMongo = new ProductsMongo();
 export default class ProductController {
@@ -211,14 +212,34 @@ export default class ProductController {
   };
 
   productsDb = async (req, res) => {
+    const { id } = req.params;
     try {
-      const result = await productModel.find();
+      const result = await productModel.findById(id);
       if (!result) return res.status(404).send({ message: "No hay productos" });
+      console.log(result);
+      const {
+        title,
+        description,
+        _id,
+        category,
+        status,
+        stock,
+        thumbnail,
+        price,
+      } = result;
       res.render("productsDb", {
-        title: "Productos",
-        products: result,
+        title,
+        description,
+        _id,
+        category,
+        status,
+        stock,
+        thumbnail,
+        price,
+        user: req.session.user,
       });
     } catch (error) {
+      console.log(error);
       req.logger.error(error);
     }
   };
@@ -285,5 +306,29 @@ export default class ProductController {
       products.push(product);
     }
     res.status(200).json(products);
+  };
+
+  updateImage = async (req, res) => {
+    const images = req.files;
+    const product = await productModel.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    let imagePaths = [];
+    if (images) {
+      try {
+        imagePaths = await Promise.all(
+          images.map((image) => processImage(image))
+        );
+        product.thumbnail = imagePaths[0];
+        await product.save();
+        res.send({ status: "success", payload: product });
+      } catch (error) {
+        return res
+          .status(500)
+          .json({ error: "Error al procesar las imágenes", Eerror: error });
+      }
+    }
   };
 }
