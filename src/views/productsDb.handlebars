@@ -118,10 +118,9 @@
               id="category"
             >
               <option value="" disabled selected>Select a category</option>
-              <option value="pantalones">PANTALONES</option>
-              <option value="remeras">REMERAS</option>
-              <option value="zapatos">ZAPATOS</option>
-              <option value="camisas">CAMISAS</option>
+              <option value="rectangulares">Rectangulares</option>
+              <option value="circulares">Circulares</option>
+              <option value="banderas">Banderas</option>
             </select>
             <div
               class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-black"
@@ -233,7 +232,11 @@
                 class="actual-price ml-4 text-gray-400 line-through"
               >${{this.price}}</span>
               <span class="font-bold font-sans">Stock{{this.stock}}</span>
+
             </div>
+            <span class="font-bold font-sans">Category:
+              <strong class="text-gray-600">{{this.category}}</strong>
+            </span>
           </div>
         </div>
       </div>
@@ -371,10 +374,9 @@
               id="categoryEdit"
             >
               <option value="" disabled selected>Select a category</option>
-              <option value="pantalones">PANTALONES</option>
-              <option value="remeras">REMERAS</option>
-              <option value="zapatos">ZAPATOS</option>
-              <option value="camisas">CAMISAS</option>
+              <option value="rectangulares">Rectangulares</option>
+              <option value="circulares">Circulares</option>
+              <option value="banderas">Banderas</option>
             </select>
             <div
               class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-black"

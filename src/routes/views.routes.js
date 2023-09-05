@@ -6,8 +6,10 @@ import {
   publicAcces,
   adminAcces,
   isAuth,
+  rolPremiumAdminAcces,
 } from "./../middlewares/userMiddleware.js";
 import UserController from "../controllers/user.controller.js";
+import validateObjectId from "../middlewares/validateObjetId.js";
 
 const router = Router();
 
@@ -21,13 +23,22 @@ const userController = new UserController();
 //Obtener todos los productos
 router.get("/", productController.getAllProducts);
 //Obtener un producto por id para poder editarlo
-router.get("/productsDb/:id", adminAcces, productController.productsDb);
+router.get(
+  "/productsDb/:id",
+  validateObjectId,
+  rolPremiumAdminAcces,
+  productController.productsDb
+);
 //Vista creada para los primeros desafios editar productos tiempo real fs
 router.get("/realtimeproducts", adminAcces, productController.realTimeProducts);
 //Filtrado de productos
 router.get("/products", productController.productsFilter);
 //Obtener un producto para generar la vista de detalle
-router.get("/products/:id", productController.getProductToRender);
+router.get(
+  "/products/:id",
+  validateObjectId,
+  productController.getProductToRender
+);
 
 /* Chat. */
 router.get("/chat", publicAcces, chatController.renderChat);

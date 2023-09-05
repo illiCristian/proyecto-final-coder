@@ -17,7 +17,7 @@ function openModal(btn) {
       <h2 class="text-red-800 font-bold text-xl">${product.title}</h2>
       <p class="text-gray-600">${product.description}</p>
       <p class="text-green-500 font-semibold">Precio: $${product.price}</p>
-      <p class="text-blue-500 font-semibold">Stock: ${product.stock}</p>
+      <p class="text-gray-800 font-semibold">Stock: ${product.stock}</p>
       <img src=${product.thumbnail} class="w-64 h-64 object-contain mx-auto my-4 rounded-md shadow-md" alt="${product.title}"/>
       <div class="flex justify-center space-x-4">
         <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
@@ -95,7 +95,7 @@ function toggleDropdown() {
 }
 
 // Agregar evento click al botón del dropdown
-dropdownToggleButton.addEventListener("click", toggleDropdown);
+/* dropdownToggleButton.addEventListener("click", toggleDropdown); */
 const form = document.getElementById("contactForm");
 async function submitForm() {
   let errorEmail = document.getElementById("errorEmail");
@@ -152,4 +152,95 @@ productContainers.forEach((item, i) => {
   preBtn[i].addEventListener("click", () => {
     item.scrollLeft -= containerWidth;
   });
+});
+
+async function editRole(userId) {
+  spinner.style.display = "block";
+  const select = document.getElementById(`categoryEdit_${userId}`);
+  const selectedRole = select.value;
+  try {
+    const result = await fetch(`/api/users/admin/editrole/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify({ role: selectedRole }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (result.status === 200) {
+      spinner.style.display = "none";
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Rol editado correctamente!!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
+  } catch (error) {
+    spinner.style.display = "none";
+    console.log(error);
+  }
+  spinner.style.display = "none";
+}
+
+async function deleteUser(userId) {
+  try {
+    spinner.style.display = "block";
+    const result = await fetch(`/api/users/admin/${userId}`, {
+      method: "DELETE",
+    });
+    if (result.status === 200) {
+      spinner.style.display = "none";
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Usuario eliminado correctamente!!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+  } catch (error) {
+    spinner.style.display = "none";
+    console.log(error);
+  }
+  spinner.style.display = "none";
+}
+
+const deleteInactiveUsers = document.getElementById("deleteInactiveUsers");
+deleteInactiveUsers.addEventListener("click", async () => {
+  try {
+    const res = await fetch("/api/users/unactiveusers", {
+      method: "DELETE",
+    });
+
+    if (res.status === 200) {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Usuarios eliminados correctamente!!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+    if (res.status === 400) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "No hay usuarios inactivos",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 });

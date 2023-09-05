@@ -10,7 +10,7 @@
           /></a>
       </div>
       <div
-        class="nav-links duration-700 md:static absolute bg-white md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5 z-50 md:z-10"
+        class="nav-links duration-700 md:static absolute bg-white md:min-h-fit min-h-[60vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5 z-40 md:z-10"
       >
         <ul
           class="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8 font-sans font-bold"
@@ -19,9 +19,10 @@
             <div class="relative">
               <a
                 href="/products"
+                id="telonesLink"
                 class="text-black text-lg relative"
                 onmouseenter="showProductMenu(this)"
-              >Productos</a>
+              >Telones</a>
               <ul
                 id="productMenu"
                 class="hidden absolute bg-gray-500 text-sm text-black font-bold mt-2 p-2 rounded-lg"
@@ -30,28 +31,23 @@
 
                 <li>
                   <a
-                    href="/?category=pantalones"
+                    href="/?category=rectangulares"
                     class="block px-4 py-2 hover:bg-gray-600 hover:text-white"
-                  >Pantalones</a>
+                  >Rectangulares</a>
                 </li>
                 <li>
                   <a
-                    href="/?category=remeras"
+                    href="/?category=circulares"
                     class="block px-4 py-2 hover:bg-gray-600 hover:text-white"
-                  >Remeras</a>
+                  >Circulares</a>
                 </li>
                 <li>
                   <a
-                    href="/?category=camisas"
+                    href="/?category=banderas"
                     class="block px-4 py-2 hover:bg-gray-600 hover:text-white"
-                  >Camisas</a>
+                  >Banderas</a>
                 </li>
-                <li>
-                  <a
-                    href="/?category=zapatos"
-                    class="block px-4 py-2 hover:bg-gray-600 hover:text-white"
-                  >Zapatos</a>
-                </li>
+      
                 <li>
                   <a
                     href="/"
@@ -63,19 +59,24 @@
             </div>
           </li>
           <li>
-            <a class="text-black text-lg" href="/chat">Chat</a>
+            <a class="text-black text-lg" href="/chat" id="chatLink">Chat</a>
           </li>
           <li>
-            <a class="text-black text-lg" href="/login">Login</a>
+            <a class="text-black text-lg" href="/login" id="loginLink">Login</a>
           </li>
           <li>
-            <a class="text-black text-lg" href="/profile">Profile</a>
+            <a
+              class="text-black text-lg"
+              href="/profile"
+              id="loginLink"
+            >Profile</a>
           </li>
           <li>
-            <a class="text-black text-lg" href="/cart">Cart</a>
+
+            <a class="text-black text-lg {{#if currentSectionIsCart}}active{{/if}}" href="/cart" id="cartLink">Cart</a>
           </li>
           <li>
-            <a class="text-black text-lg" href="/admin">Admin</a>
+            <a class="text-black text-lg" href="/admin" id="adminLink">Admin</a>
           </li>
         </ul>
       </div>

@@ -63,9 +63,15 @@ cartCheckout.addEventListener("click", async () => {
     const purchaseData = await purchaseResponse.json();
     spinner.style.display = "none";
     if (purchaseData.status === "success") {
-      alert(
-        "Compra relizada con exito, recibiras un mail con los datos de la compra"
-      );
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title:
+          "Compra realizada con exito, recibiras un mail con los datos de la compra",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      location.replace("/");
     }
   } catch (error) {
     console.log(error);
@@ -82,28 +88,35 @@ const mercadopago = new MercadoPago(
   }
 );
 
-document.getElementById("checkout-btn").addEventListener("click", function () {
-  const orderData = {
-    product: " test",
-  };
-
-  fetch("/api/payment/create_preference", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(orderData),
-  })
-    .then(function (response) {
-      return response.json();
+document
+  .getElementById("checkout-btn")
+  .addEventListener("click", async function () {
+    const orderData = {
+      product: " test",
+    };
+    spinner.style.display = "block";
+    const response = await fetch("/api/session/current");
+    const data = await response.json();
+    const cartId = data.payload.cart;
+    fetch(`/api/payment/create_preference/${cartId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
     })
-    .then(function (preference) {
-      createCheckoutButton(preference.id);
-    })
-    .catch(function () {
-      alert("Unexpected error");
-    });
-});
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (preference) {
+        spinner.style.display = "none";
+        createCheckoutButton(preference.id);
+      })
+      .catch(function () {
+        spinner.style.display = "none";
+        alert("Unexpected error");
+      });
+  });
 
 function createCheckoutButton(preferenceId) {
   // Initialize the checkout

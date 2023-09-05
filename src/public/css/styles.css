@@ -2,3 +2,9 @@
 .product-container::-webkit-scrollbar {
   display: none;
 }
+.active {
+  font-weight: bold;
+  border: 2px solid #161617; /* Cambia el color y grosor del borde según tus preferencias */
+  border-radius: 10px; /* Opcional: agrega bordes redondeados */
+  padding: 5px; /* Opcional: agrega espacio alrededor del texto */
+}

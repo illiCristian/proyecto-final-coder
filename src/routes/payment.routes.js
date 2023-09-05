@@ -4,7 +4,7 @@ import PaymentController from "../controllers/payment.controller.js";
 const router = Router();
 
 const paymentController = new PaymentController();
-router.post("/create_preference", paymentController.createOrder);
+router.post("/create_preference/:cid", paymentController.createOrder);
 router.get("/success", paymentController.successPayment);
 router.get("/failure", paymentController.failurePayment);
 router.get("/pending", paymentController.pendingPayment);

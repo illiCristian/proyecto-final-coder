@@ -11,8 +11,16 @@ form.addEventListener("submit", async function (e) {
   const code = document.getElementById("code").value;
   const stock = document.getElementById("stock").value;
   const category = document.getElementById("category").value;
-  product.push({ title, description, price, thumbnail, code, stock, category });
-  console.log(product);
+  product.push({
+    title,
+    description,
+    price,
+    thumbnail,
+    code,
+    stock,
+    category,
+  });
+
   spinner.style.display = "block";
   fetch("/api/productsDatabase", {
     method: "POST",
@@ -79,11 +87,22 @@ deleteForm.addEventListener("submit", (event) => {
     method: "DELETE",
   })
     .then((response) => {
+      if (response.status === 401) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "No tienes permisos para borrar este producto",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        spinner.style.display = "none";
+      }
       spinner.style.display = "none";
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      return response.json();
+      return response;
     })
     .then((data) => {
       location.replace("/products");
@@ -141,6 +160,16 @@ formEdit.addEventListener("submit", async function (e) {
     body: JSON.stringify(requestBody),
   })
     .then((response) => {
+      if (response.status === 401) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "No tienes permisos para editar este producto",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        spinner.style.display = "none";
+      }
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -198,6 +227,15 @@ document
         );
         console.log(result);
         spinner.style.display = "none";
+        if (result.status === 401) {
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "No tienes permisos para borrar este producto",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
         if (result.status === 200) {
           Swal.fire({
             position: "center",

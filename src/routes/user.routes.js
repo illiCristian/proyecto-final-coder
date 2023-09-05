@@ -11,7 +11,7 @@ const userController = new UserController();
 router.get("/premium/:uid", (req, res) => {
   res.send("Hello");
 });
-//
+
 router.post("/contact", validateSchema(contactSchema), userController.contact);
 //http://localhost:8080/api/users/64e3cded6bc58576c4ba0a89/documents
 router.put(
@@ -28,6 +28,13 @@ router.put(
 );
 
 router.put("/premium/:uid", adminAcces, userController.changeRol);
+
+router.put("/admin/editrole/:uid", adminAcces, userController.editUserRole);
+
+router.delete("/unactiveusers", adminAcces, userController.deleteUnactiveUsers);
+
+router.delete("/admin/:uid", adminAcces, userController.deleteUser);
+
 
 export default router;
 
