@@ -8,18 +8,22 @@
     href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css"
   />
 
-  <div class="float-right">
+  {{!-- <div class="float-right">
     <div> Usuario actual: {{user.name}}</div>
     <div><a href="/api/session/logout">Salir</a></div>
-  </div>
+  </div> --}}
   <br />
 
   <div class="container">
     <div class="flex items-center justify-between">
       <h3>Listado de Usuarios</h3>
+      <button
+        id="deleteInactiveUsers"
+        class="flex items-center justify-center p-1 font-semibold tracking rounded-md bg-white dark:text-gray-900"
+      >Borrar usuarios inactivos</button>
       <a href="/products">
         <button
-          class="flex items-center justify-center w-full p-3 font-semibold tracking rounded-md bg-violet-400 dark:text-gray-900"
+          class="flex items-center justify-center p-1 font-semibold tracking rounded-md bg-white dark:text-gray-900"
         >
           Editar productos</button></a>
     </div>
@@ -32,7 +36,10 @@
       <thead>
         <th>Nombre</th>
         <th>Email</th>
-        <th>Rol</th>
+        <th>Role</th>
+        <th>Edit</th>
+        <th>Delete User</th>
+        <th>Save</th>
       </thead>
       <tbody>
 
@@ -41,6 +48,24 @@
             <td>{{this.first_name}}</td>
             <td>{{this.email}}</td>
             <td>{{this.role}}</td>
+            <td class="flex justify-center">
+              <select
+                class="text-center block appearance-none bg-gray-200 border border-gray-200 text-black rounded font-bold font-sans focus:outline-none focus:bg-white focus:border-gray-500 p-1"
+                id="categoryEdit_{{this._id}}"
+              >
+                <option value="" disabled selected>Select Role</option>
+                <option value="user">User</option>
+                <option value="premium">Premium</option>
+                <option value="admin">Admin</option>
+              </select></td>
+            <td><button
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                onclick="deleteUser('{{this._id}}')"
+              >Delete</button></td>
+            <td><button
+                class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+                onclick="editRole('{{this._id}}')"
+              >Save</button></td>
           </tr>
         {{/each}}
 
@@ -49,7 +74,20 @@
     </table>
 
   </div>
-
+  <div
+    style="z-index: 9999; display: none;"
+    id="spinner"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+  >
+    <div
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+    >
+      <div
+        class="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-violet-400"
+      ></div>
+    </div>
+  </div>
+  <script src="/js/admin.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script
     src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"
@@ -57,6 +95,5 @@
   <script
     src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"
   ></script>
-  <script src="/js/datatablesUsers.js"></script>
-
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </div>

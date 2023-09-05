@@ -12,10 +12,23 @@ export default class CartController {
   //Esta funcion deberia llamarse getCartSession pero cuando cambio el nombre da error
   getCart = async (req, res) => {
     const cartId = req.session?.user?.cart;
+    let total = 0;
     try {
       const cart = await cartMongo.getCartById(cartId);
       if (cart) {
-        res.render("cart", { title: "Carrito", cart });
+        total = cart.products
+          .reduce((acc, el) => {
+            return acc + el.product.price * el.quantity;
+          }, 0)
+          .toFixed(2);
+      }
+      if (cart) {
+        res.render("cart", {
+          title: "Carrito",
+          cart,
+          user: req.session.user,
+          total,
+        });
       } else {
         res.render("cartEmpty");
       }
@@ -140,6 +153,46 @@ export default class CartController {
         .json({ error: error.message, errorType: "Error en el servidor" });
     }
   };
+  purchaseMp = async (cartId, userEmail) => {
+    const cart = await cartMongo.getCartById(cartId);
+    if (!cart) return { message: "Carrito no encontrado" };
+    const ticketProducts = [];
+    const rejectedProducts = [];
+    const { products } = cart;
+    let totalAmount = 0;
+    products.forEach((el) => {
+      if (el.quantity <= el.product.stock) {
+        ticketProducts.push({ _id: el.product._id, quantity: el.quantity });
+        totalAmount += el.product.price * el.quantity;
+        cartMongo.deleteProductsInCart(cartId, el.product._id);
+        productMongo.updateStock(
+          el.product._id,
+          el.product.stock - el.quantity
+        );
+      } else {
+        rejectedProducts.push(el.product._id);
+      }
+    });
+    if (totalAmount > 0) {
+      const items = {
+        code: uuidv4(),
+        amount: totalAmount,
+        purcharser: userEmail,
+        products: ticketProducts,
+      };
+      const ticket = await ticketMongo.createTicket(items);
+      if (ticket) {
+        const response = {
+          title: "Productos",
+          unit_price: totalAmount,
+          currency_id: "ARS",
+          quantity: 1,
+        };
+        return response;
+      }
+    }
+  };
+
   purchase = async (req, res) => {
     //const cartId = req.session?.user?.cart;
     const cartId = req.params.cid;

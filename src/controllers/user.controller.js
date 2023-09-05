@@ -5,11 +5,14 @@ import {
   createHash,
   generateEmailToken,
   isValidPassword,
-  validatePassword,
   verifyEmailToken,
 } from "../utils.js";
 import { GetUserDto } from "../Dao/Dto/user.dto.js";
-import { sendContactEmail, sendRecoveryPass } from "../config/gmailConfig.js";
+import {
+  sendContactEmail,
+  sendNotifyMail,
+  sendRecoveryPass,
+} from "../config/gmailConfig.js";
 export default class UserController {
   registerView = async (req, res) => {
     res.render("register");
@@ -309,6 +312,77 @@ export default class UserController {
       res.json({
         status: "error",
         message: "Hubo un error en la carga de los archivos.",
+      });
+    }
+  };
+
+  async deleteUnactiveUsers(req, res) {
+    //Delete unactive users after 2 days of inactivity
+    const date = new Date();
+    date.setDate(date.getDate() - 2);
+    //date.setSeconds(date.getSeconds() - 10);
+    try {
+      const users = await userModel.find({
+        last_connection: { $lte: date },
+      });
+      if (users.length > 0) {
+        users.forEach((el) => {
+          let res = sendNotifyMail(el.email);
+          console.log(res);
+        });
+        const res = await userModel.deleteMany({
+          last_connection: { $lte: date },
+        });
+        res.status(200).json({ message: "succes", users: res });
+      }
+
+      res
+        .status(400)
+        .json({ message: "No hay usuarios inactivos para borrar" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Something failed!" });
+    }
+  }
+  editUserRole = async (req, res) => {
+    try {
+      const { role } = req.body;
+      const userId = req.params.uid;
+      const user = await userModel.findById(userId);
+      if (!user) {
+        return res.json({
+          status: "error",
+          message: "El usuario no existe",
+        });
+      }
+      user.role = role;
+      await userModel.updateOne({ _id: user._id }, user);
+      res.json({ status: "success", message: "Rol modificado" });
+    } catch (error) {
+      console.log(error.message);
+      res.json({
+        status: "error",
+        message: "Hubo un error al cambiar el rol del usuario",
+      });
+    }
+  };
+  deleteUser = async (req, res) => {
+    try {
+      const userId = req.params.uid;
+      const user = await userModel.findById(userId);
+      if (!user) {
+        return res.json({
+          status: "error",
+          message: "El usuario no existe",
+        });
+      }
+      await userModel.deleteOne({ _id: user._id });
+      res.json({ status: "success", message: "Usuario eliminado" });
+    } catch (error) {
+      console.log(error.message);
+      res.json({
+        status: "error",
+        message: "Hubo un error al eliminar el usuario",
       });
     }
   };

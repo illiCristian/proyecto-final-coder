@@ -55,6 +55,9 @@ const config = {
     apiKey: process.env.CLOUDINARY_API_KEY,
     apiSecret: process.env.CLOUDINARY_API_SECRET,
   },
+  mp: {
+    testToken: process.env.TOKEN_MP_TEST,
+  },
   nodeEnv: NODE_ENV,
 };
 

@@ -63,12 +63,80 @@ cartCheckout.addEventListener("click", async () => {
     const purchaseData = await purchaseResponse.json();
     spinner.style.display = "none";
     if (purchaseData.status === "success") {
-      alert(
-        "Compra relizada con exito, recibiras un mail con los datos de la compra"
-      );
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title:
+          "Compra realizada con exito, recibiras un mail con los datos de la compra",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      location.replace("/");
     }
   } catch (error) {
     console.log(error);
     spinner.style.display = "none";
   }
 });
+
+/* Integracion Api Mercado pago */
+
+const mercadopago = new MercadoPago(
+  "TEST-72cf3e50-8cae-4fbf-8e61-eed51837566e",
+  {
+    locale: "es-AR", // The most common are: 'pt-BR', 'es-AR' and 'en-US'
+  }
+);
+
+document
+  .getElementById("checkout-btn")
+  .addEventListener("click", async function () {
+    const orderData = {
+      product: " test",
+    };
+    spinner.style.display = "block";
+    const response = await fetch("/api/session/current");
+    const data = await response.json();
+    const cartId = data.payload.cart;
+    fetch(`/api/payment/create_preference/${cartId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (preference) {
+        spinner.style.display = "none";
+        createCheckoutButton(preference.id);
+      })
+      .catch(function () {
+        spinner.style.display = "none";
+        alert("Unexpected error");
+      });
+  });
+
+function createCheckoutButton(preferenceId) {
+  // Initialize the checkout
+  const bricksBuilder = mercadopago.bricks();
+
+  const renderComponent = async (bricksBuilder) => {
+    if (window.checkoutButton) window.checkoutButton.unmount();
+    await bricksBuilder.create(
+      "wallet",
+      "button-checkout", // class/id where the payment button will be displayed
+      {
+        initialization: {
+          preferenceId: preferenceId,
+        },
+        callbacks: {
+          onError: (error) => console.error(error),
+          onReady: () => {},
+        },
+      }
+    );
+  };
+  window.checkoutButton = renderComponent(bricksBuilder);
+}

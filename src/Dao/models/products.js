@@ -26,7 +26,7 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      enum: ["pantalones", "remeras", "zapatos", "camisas", "test"],
+      enum: ["circulares", "rectangulares", "banderas"],
     },
     status: {
       type: Boolean,
@@ -44,7 +44,7 @@ const schema = new mongoose.Schema(
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: "User",
     },
   },
   {

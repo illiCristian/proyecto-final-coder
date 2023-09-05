@@ -60,4 +60,42 @@ export const sendContactEmail = async (userEmail) => {
   }
 };
 
+export const sendNotifyMail = async (userEmail) => {
+  try {
+    const res = await transporter.sendMail({
+      from: adminEmail,
+      to: userEmail,
+      subject: "Contacto",
+      html: `
+        <div>
+        <h2>Notificacion de ecommerce  .</h2>
+        <p>Debido a la inactividad, su cuenta fue borrada de nuestra base de datos</p>
+        <p>Si desea volver a reactivar la cuenta lo invitamos a contactarse con nosotros </p>      
+        </div>
+        `,
+    });
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const sendNotifyMailProduct = async (userEmail) => {
+  try {
+    const res = await transporter.sendMail({
+      from: adminEmail,
+      to: userEmail,
+      subject: "Contacto",
+      html: `
+        <div>
+        <h2>Notificacion de ecommerce  .</h2>
+        <p>Debido a la inactividad, su producto fue borrado de nuestra base de datos</p>
+        <p>Si desea volver a reactivar el producto lo invitamos a contactarse con nosotros </p>      
+        </div>
+        `,
+    });
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
 export default transporter;

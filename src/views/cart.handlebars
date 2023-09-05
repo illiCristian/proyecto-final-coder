@@ -84,6 +84,7 @@
           </td>
         </tr>
       </tbody>
+
       <div
         style="display: none;"
         id="spinner"
@@ -92,7 +93,7 @@
         <div role="status" class="flex items-center justify-center h-screen">
           <svg
             aria-hidden="true"
-            class="inline w-16 h-16 mr-2 text-gray-200 animate-spin text-gray-600 fill-blue-600 top-50 left-50"
+            class="inline w-16 h-16 mr-2 text-gray-200 animate-spin fill-blue-600 top-50 left-50"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -111,12 +112,21 @@
       </div>
     {{/each}}
   </table>
+  <div class="w-full flex-1 text-right font-bold font-sans text-xl">Precio total
+    $
+    {{total}}</div>
   <div class="flex items-center justify-center mt-4 gap-2 mb-4">
     <button
       id="checkout"
       class="bg-blue-500 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
-    >Purchase</button>
+    >Comprar</button>
+    <button
+      id="checkout-btn"
+      class="bg-blue-500 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
+    >Pagar con Mercado Pago</button>
   </div>
+
+  <div id="button-checkout"></div>
   <footer class="py-6 bg-gray-800 text-gray-50 mt-auto">
     <div
       class="container mx-auto flex flex-col justify-around p-4 text-center md:p-10 lg:flex-row"
@@ -187,4 +197,6 @@
   </footer>
 </div>
 
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/cart.js"></script>

@@ -5,6 +5,9 @@ import { generateProduct } from "../utils.js";
 import { CustomError } from "../services/customError.service.js";
 import { generateProductErrorInfo } from "../services/ErrorInfo.js";
 import { EError } from "../enums/Errors.js";
+import { processImage } from "../utils/helpers/proccesImage.js";
+import products from "../Dao/files/newProducts.js";
+import { sendNotifyMailProduct } from "../config/gmailConfig.js";
 const manager = new ProductManager();
 const productMongo = new ProductsMongo();
 export default class ProductController {
@@ -21,6 +24,7 @@ export default class ProductController {
       const { docs, hasPrevPage, hasNextPage, nextPage, prevPage, totalPages } =
         await productMongo.getAllProducts(category, options);
       const products = docs;
+      products.reverse();
       const pagesArray = [];
       for (let i = 1; i <= totalPages; i++) {
         pagesArray.push(i);
@@ -68,25 +72,43 @@ export default class ProductController {
         category,
         status,
       } = result;
-      res.render("product", {
-        id: _id,
-        title,
-        description,
-        price,
-        thumbnail,
-        stock,
-        code,
-        category,
-        status,
-        user: req.session.user,
-      });
+      if (
+        req.session.user?.role === "admin" ||
+        req.session.user?.role === "premium"
+      ) {
+        res.render("productsDb", {
+          _id,
+          title,
+          description,
+          price,
+          thumbnail,
+          stock,
+          code,
+          category,
+          status,
+          user: req.session.user,
+        });
+      } else {
+        res.render("product", {
+          id: _id,
+          title,
+          description,
+          price,
+          thumbnail,
+          stock,
+          code,
+          category,
+          status,
+          user: req.session.user,
+        });
+      }
     } catch (error) {
       res.status(500).send({ message: error.message });
     }
   };
   //Crear un producto
   createProduct = async (req, res) => {
-    console.log(req.body);
+    const owner = req.session?.user._id;
     try {
       const {
         title,
@@ -133,7 +155,7 @@ export default class ProductController {
         code,
         category,
         status,
-        owner: req.session.user.id,
+        owner,
       };
 
       const result = await productMongo.createProduct(product);
@@ -166,8 +188,19 @@ export default class ProductController {
         category: category ? category : undefined,
         status: status ? status : undefined,
       };
-      const result = await productMongo.updateProduct(id, update);
-      res.status(201).json(result);
+      const product = await productModel.findById(id);
+      if (product) {
+        const productOwer = JSON.parse(JSON.stringify(product.owner));
+        const userId = req.user.id;
+        if (
+          (req.user.role === "premium" && productOwer == userId) ||
+          req.user.role === "admin"
+        ) {
+          const result = await productMongo.updateProduct(id, update);
+          res.status(201).json({ status: "success", payload: result });
+        }
+        res.status(401).json({ status: "error", message: "No autorizado" });
+      }
     } catch (error) {
       res.status(500).send({ message: error.message });
     }
@@ -176,23 +209,26 @@ export default class ProductController {
   deleteProduct = async (req, res) => {
     try {
       const productId = req.params.id;
-      const product = await productModel.findById(productId);
+      const product = await productModel.findById(productId).populate("owner");
+      console.log(product);
+      console.log("llego aca");
       if (product) {
         const productOwer = JSON.parse(JSON.stringify(product.owner));
-        console.log(productOwer);
         const userId = req.user.id;
-        console.log(userId);
-        if (
-          (req.user.role === "premium" && productOwer == userId) ||
-          req.user.role === "admin"
-        ) {
+
+        if (req.user.role === "admin") {
+          if (product.owner.role === "premium") {
+            sendNotifyMailProduct(product.owner.email);
+          }
+          await productModel.findByIdAndDelete(productId);
+          return res.json({ status: "success", message: "producto eliminado" });
+        }
+
+        if (req.user.role === "premium" && productOwer == userId) {
           await productModel.findByIdAndDelete(productId);
           return res.json({ status: "success", message: "producto eliminado" });
         } else {
-          res.json({
-            status: "error",
-            message: "no puedes borrar este producto",
-          });
+          res.status(401).json({ status: "error", message: "No autorizado" });
         }
       } else {
         return res.json({ status: "error", message: "El producto no existe" });
@@ -211,14 +247,34 @@ export default class ProductController {
   };
 
   productsDb = async (req, res) => {
+    const { id } = req.params;
     try {
-      const result = await productModel.find();
+      const result = await productModel.findById(id);
       if (!result) return res.status(404).send({ message: "No hay productos" });
+      console.log(result);
+      const {
+        title,
+        description,
+        _id,
+        category,
+        status,
+        stock,
+        thumbnail,
+        price,
+      } = result;
       res.render("productsDb", {
-        title: "Productos",
-        products: result,
+        title,
+        description,
+        _id,
+        category,
+        status,
+        stock,
+        thumbnail,
+        price,
+        user: req.session.user,
       });
     } catch (error) {
+      console.log(error);
       req.logger.error(error);
     }
   };
@@ -285,5 +341,65 @@ export default class ProductController {
       products.push(product);
     }
     res.status(200).json(products);
+  };
+
+  updateImage = async (req, res) => {
+    const images = req.files;
+    const productId = req.params.id;
+    const product = await productModel.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+    const productOwer = JSON.parse(JSON.stringify(product.owner));
+    const userId = req.user.id;
+    console.log(productOwer, userId);
+    if (product) {
+      console.log("llego aca");
+      console.log(product);
+
+      if (
+        (req.user.role === "premium" && productOwer == userId) ||
+        req.user.role === "admin"
+      ) {
+        let imagePaths = [];
+        if (images) {
+          try {
+            imagePaths = await Promise.all(
+              images.map((image) => processImage(image))
+            );
+            product.thumbnail = imagePaths[0];
+            await product.save();
+            res.send({ status: "success", payload: product });
+          } catch (error) {
+            console.log(error);
+            return res
+              .status(500)
+              .json({ error: "Error al procesar las imágenes", Eerror: error });
+          }
+        } else {
+          res.status(401).json({ status: "error", message: "No autorizado" });
+        }
+      }
+    }
+  };
+
+  uploadMany = async (req, res) => {
+    try {
+      // Obtener el ID del propietario desde req.session.user.id
+      const ownerId = req.session.user.id;
+
+      // Agregar el campo "owner" a cada producto con el ID del propietario
+      const productsWithOwner = products.map((product) => ({
+        ...product,
+        owner: ownerId,
+      }));
+
+      // Insertar los productos en la base de datos
+      const result = await productModel.insertMany(productsWithOwner);
+
+      res.status(200).json({ status: "success", payload: result });
+    } catch (error) {
+      res.status(400).send({ message: error.message });
+    }
   };
 }

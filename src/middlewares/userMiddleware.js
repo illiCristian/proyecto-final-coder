@@ -14,6 +14,7 @@ export const privateAcces = (req, res, next) => {
 };
 
 export const adminAcces = (req, res, next) => {
+  console.log(req.session.user.role);
   if (req.session.user.role !== "admin") {
     console.log("solo se admiten admins");
     return res.status(401).json({ message: "Unauthorized" });
