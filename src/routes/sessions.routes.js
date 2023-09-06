@@ -3,7 +3,7 @@ import passport from "passport";
 import UserController from "../controllers/user.controller.js";
 import { privateAcces } from "../middlewares/userMiddleware.js";
 import { validateSchema } from "../middlewares/validateSchema.js";
-import { loginSchema, registerSchema } from "../schemas/auth.schema.js";
+import { loginSchema, registerSchema } from "../Dao/Dto/schemas/auth.schema.js";
 const router = Router();
 const userController = new UserController();
 

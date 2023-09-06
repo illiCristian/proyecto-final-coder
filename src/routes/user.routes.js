@@ -2,7 +2,7 @@ import { Router } from "express";
 import { adminAcces, privateAcces } from "../middlewares/userMiddleware.js";
 import UserController from "../controllers/user.controller.js";
 import { validateSchema } from "../middlewares/validateSchema.js";
-import { contactSchema } from "../schemas/auth.schema.js";
+import { contactSchema } from "../Dao/Dto/schemas/auth.schema.js";
 import { uploaderDocument } from "../middlewares/multerFiles.js";
 
 const router = Router();
@@ -34,7 +34,6 @@ router.put("/admin/editrole/:uid", adminAcces, userController.editUserRole);
 router.delete("/unactiveusers", adminAcces, userController.deleteUnactiveUsers);
 
 router.delete("/admin/:uid", adminAcces, userController.deleteUser);
-
 
 export default router;
 

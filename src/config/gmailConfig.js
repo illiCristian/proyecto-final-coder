@@ -98,4 +98,32 @@ export const sendNotifyMailProduct = async (userEmail) => {
     console.log(error);
   }
 };
+
+export const sendPurchaseEmail = async (
+  userEmail,
+  totalAmount,
+  newTicket,
+  productos
+) => {
+  try {
+    await transporter.sendMail({
+      from: "CodersHouse",
+      to: userEmail,
+      subject: "Compra realizada",
+      html: `
+      <h1>Compra realizada con exito!</h1>  <br>
+      <p>Gracias por confiar en nosotros</p><br>
+      <p>Detalles de la compra:</p><br>
+      Codigo de compra: ${newTicket.code}<br>
+      Comprador: ${newTicket.purcharser}<br>
+      Productos: ${productos}<br>
+      Monto total: ${newTicket.amount}<br>
+      <strong>Monto total</strong>: ${totalAmount}<br>`,
+    });
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
 export default transporter;

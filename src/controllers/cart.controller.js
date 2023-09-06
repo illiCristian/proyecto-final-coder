@@ -2,8 +2,9 @@ import CartMongo from "../Dao/Manager/cart.mongo.js";
 import { v4 as uuidv4 } from "uuid";
 import TicketMongo from "../Dao/Manager/ticket.mongo.js";
 import ProductsMongo from "../Dao/Manager/products.mongo.js";
-import transporter from "../config/gmailConfig.js";
+import transporter, { sendPurchaseEmail } from "../config/gmailConfig.js";
 import productModel from "../Dao/models/products.js";
+import ticketModel from "../Dao/models/ticket.js";
 const cartMongo = new CartMongo();
 const ticketMongo = new TicketMongo();
 const productMongo = new ProductsMongo();
@@ -206,7 +207,11 @@ export default class CartController {
     let totalAmount = 0;
     products.forEach((el) => {
       if (el.quantity <= el.product.stock) {
-        ticketProducts.push({ _id: el.product._id, quantity: el.quantity });
+        ticketProducts.push({
+          _id: el.product._id,
+          quantity: el.quantity,
+          title: el.product.title,
+        });
         totalAmount += el.product.price * el.quantity;
         cartMongo.deleteProductsInCart(cartId, el.product._id);
         productMongo.updateStock(
@@ -224,24 +229,21 @@ export default class CartController {
         purcharser: userEmail,
         products: ticketProducts,
       };
+      const productos = ticketProducts.map((el) => el.title);
+
       const ticket = await ticketMongo.createTicket(newTicket);
+
       if (ticket) {
-        try {
-          const contenido = await transporter.sendMail({
-            from: "CodersHouse",
-            to: userEmail,
-            subject: "Compra realizada",
-            html: `
-            <h1>Compra realizada con exito!</h1> 
-            <strong>Monto total</strong>: ${totalAmount}`,
+        const response = sendPurchaseEmail(userEmail, totalAmount, newTicket, productos);
+        if (response) {
+          res.status(200).json({
+            status: "success",
+            message: "Compra realizada con exito!",
           });
-        } catch (error) {
-          req.logger.error(error);
+        } else {
+          res.status(500).json({ message: "Error al enviar el mail" });
         }
       }
-      res
-        .status(200)
-        .json({ status: "success", message: "Compra realizada con exito!" });
     } else {
       res.status(400).json({ message: "No hay productos en el carrito" });
     }
