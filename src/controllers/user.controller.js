@@ -386,4 +386,27 @@ export default class UserController {
       });
     }
   };
+  async getUsers(req, res) {
+    try {
+      const users = await userModel.find().lean().exec();
+      const data = users.map((el) => {
+        return {
+          first_name: el.first_name,
+          last_name: el.last_name,
+          email: el.email,
+          age: el.age,
+          role: el.role,
+          status: el.status,
+          last_connection: el.last_connection,
+        };
+      });
+      res.json({ status: "success", payload: data });
+    } catch (error) {
+      console.log(error.message);
+      res.json({
+        status: "error",
+        message: "Hubo un error al obtener los usuarios",
+      });
+    }
+  }
 }

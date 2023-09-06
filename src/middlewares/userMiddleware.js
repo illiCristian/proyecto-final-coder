@@ -7,7 +7,6 @@ export const isAuth = (req, res, next) => {
   next();
 };
 export const privateAcces = (req, res, next) => {
-  console.log("solo se admiten usuarios logueados");
   if (!req.session.user)
     return res.status(401).json({ message: "Unauthorized" });
   next();

@@ -8,9 +8,7 @@ import { uploaderDocument } from "../middlewares/multerFiles.js";
 const router = Router();
 const userController = new UserController();
 
-router.get("/premium/:uid", (req, res) => {
-  res.send("Hello");
-});
+router.get("/", adminAcces, userController.getUsers);
 
 router.post("/contact", validateSchema(contactSchema), userController.contact);
 //http://localhost:8080/api/users/64e3cded6bc58576c4ba0a89/documents
