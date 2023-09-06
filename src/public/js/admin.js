@@ -35,7 +35,7 @@ function openModal(btn) {
 async function addToCart(id, req) {
   spinner.style.display = "block";
   try {
-    const result = await fetch(`http://localhost:8080/api/cartsDb/${id}`, {
+    const result = await fetch(`/api/cartsDb/${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
